@@ -1,0 +1,3 @@
+feedparser==6.0.11
+ollama==0.2.1
+Markdown~=3.7
