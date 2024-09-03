@@ -3,4 +3,4 @@
 - 仅更新RSS feed。对已处理的文献不再总结翻译。
 
 Reference
-- https://github.com/rb81/ollama-feed-summarizer?tab=MIT-1-ov-file
+- [Ollama Feed Summarizer](https://github.com/rb81/ollama-feed-summarizer?tab=MIT-1-ov-file)
