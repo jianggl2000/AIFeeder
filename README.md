@@ -4,3 +4,4 @@
 
 ## Based on
 - [Ollama Feed Summarizer](https://github.com/rb81/ollama-feed-summarizer?tab=MIT-1-ov-file)
+- [Ollama](https://github.com/ollama/ollama?tab=readme-ov-file)
