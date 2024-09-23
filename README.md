@@ -5,13 +5,15 @@
 # Installation
 ## Install Ollama
 
-## install AIFeeder
+## Install AIFeeder
 
 git clone https://github.com/jianggl2000/AIfeeder/
 
 cd AIfeeder
 
 pip install -r requirements.txt
+
+## Run AIFeeder
 
 python AIFeeder.py
 
