@@ -8,6 +8,8 @@ Fetch and summarize RSS feeds using a local Ollama
 # Installation
 ## Install Ollama
 
+Following the Ollama [instruction](https://github.com/ollama/ollama?tab=readme-ov-file) to install Ollama on Windows or Linux.
+
 ## Install AIFeeder
 
 git clone https://github.com/jianggl2000/AIfeeder/
