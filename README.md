@@ -7,14 +7,14 @@
 - Only process new RSS feeds, skip already summarized articles.
 
 ## Dependencies
-- json, os, sys, logging: Standard Python libraries for basic file operations and logging.
-- filelock: Ensures safe access to files, preventing data corruption due to concurrent writes.
-- feedparser: Parses RSS feeds and extracts article information.
-- ollama: Interacts with the Ollama AI model to generate article summaries.
-- datetime: Handles dates and times, generating timestamps for reports.
-- requests: Sends HTTP requests to fetch article content.
-- BeautifulSoup (from bs4): Parses HTML content to extract abstracts.
-- re: Uses regular expressions for text matching and extraction.
+- `json`, `os`, `sys`, `logging`: Standard Python libraries for basic file operations and logging.
+- `filelock`: Ensures safe access to files, preventing data corruption due to concurrent writes.
+- `feedparser`: Parses RSS feeds and extracts article information.
+- `ollama`: Interacts with the Ollama AI model to generate article summaries.
+- `datetime`: Handles dates and times, generating timestamps for reports.
+- `requests`: Sends HTTP requests to fetch article content.
+- `BeautifulSoup` (from bs4): Parses HTML content to extract abstracts.
+- `re`: Uses regular expressions for text matching and extraction.
 
 ## 简介
 AIFeeder.py 是一个用于自动化处理 RSS 源的 Python 脚本。该脚本的主要功能包括从多个 RSS 源中获取最新的文章，提取文章摘要，使用 AI 模型（本地Ollama）生成文章摘要，并最终生成一个包含所有摘要的报告。此脚本特别适用于需要定期汇总和分析大量 RSS 文章内容的场景，如新闻聚合、研究综述或内容监控。
