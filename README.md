@@ -62,11 +62,6 @@ AIFeeder.py 是一个用于自动化处理 RSS 源的 Python 脚本。该脚本�
 ### 报告生成：
 - 汇总所有生成的文章摘要，生成一个 HTML 格式的报告。
 - 报告包括每篇文章的标题、链接和生成的摘要，方便用户快速浏览和参考。
-### 多线程支持（尚未开发）：
-- 考虑使用 ThreadPoolExecutor 来并行处理多个 RSS 源，提高处理效率，特别是在处理大量 RSS 源时。
-
-
-
 
 ## Reference
 - [Ollama](https://github.com/ollama/ollama?tab=readme-ov-file)
