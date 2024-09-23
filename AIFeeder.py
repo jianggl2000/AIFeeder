@@ -13,8 +13,13 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 class RSSSummary:
+    PROMPT = (
+        "请阅读以下文章内容，并提供一个简洁、清晰的总结，覆盖主要观点和关键信息。"
+        "总结应易于理解，并保持客观性。"
+    )
+
     def __init__(self, config_path):
-        # 初始化日志
+        # Initialize logging
         logging.basicConfig(
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s',
@@ -33,19 +38,19 @@ class RSSSummary:
             self.ollama_client = Client(f"http://{self.ollama_config['ip']}:{self.ollama_config['port']}")
             self.ollama_model = self.ollama_config['model']
             self._check_model_accessible()
-            logging.info("初始化成功。")
+            logging.info("Initialization successful.")
         except Exception as e:
-            logging.error(f"初始化失败: {e}")
+            logging.error(f"Initialization failed: {e}")
             raise
 
     def _load_config(self, config_path):
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
                 config = json.load(f)
-            logging.info("成功加载配置文件。")
+            logging.info("Configuration file loaded successfully.")
             return config
         except Exception as e:
-            logging.error(f"加载配置文件失败: {e}")
+            logging.error(f"Failed to load configuration file: {e}")
             raise
 
     def _load_feeds(self, path):
@@ -55,10 +60,10 @@ class RSSSummary:
                     line.strip() for line in f
                     if line.strip() and not line.strip().startswith('#')
                 ]
-            logging.info(f"成功加载了 {len(feeds)} 个源。")
+            logging.info(f"Successfully loaded {len(feeds)} feeds.")
             return feeds
         except Exception as e:
-            logging.error(f"加载源失败: {e}")
+            logging.error(f"Failed to load feeds: {e}")
             raise
 
     def _load_processed(self, path):
@@ -67,31 +72,31 @@ class RSSSummary:
                 with FileLock(f"{path}.lock"):
                     with open(path, 'r', encoding='utf-8') as f:
                         processed = set(json.load(f))
-                logging.info(f"已加载 {len(processed)} 篇已处理文章。")
+                logging.info(f"Loaded {len(processed)} processed articles.")
                 return processed
-            logging.info(f"已处理文章文件 {path} 未找到，初始化为空集。")
+            logging.info(f"Processed articles file {path} not found, initializing as empty set.")
             return set()
         except Exception as e:
-            logging.error(f"加载已处理文章失败: {e}")
+            logging.error(f"Failed to load processed articles: {e}")
             return set()
 
     def _check_model_accessible(self):
         try:
             self.ollama_client.chat(model=self.ollama_model, messages=[{"role": "user", "content": "Test"}])
-            logging.info(f"模型 '{self.ollama_model}' 可访问。")
+            logging.info(f"Model '{self.ollama_model}' is accessible.")
         except ResponseError as e:
             if e.status_code == 404:
-                logging.warning(f"未找到模型 '{self.ollama_model}'。尝试拉取模型...")
+                logging.warning(f"Model '{self.ollama_model}' not found. Attempting to pull the model...")
                 try:
                     self.ollama_client.pull(self.ollama_model)
-                    logging.info(f"成功拉取模型 '{self.ollama_model}'。")
+                    logging.info(f"Successfully pulled model '{self.ollama_model}'.")
                     self.ollama_client.chat(model=self.ollama_model, messages=[{"role": "user", "content": "Test"}])
-                    logging.info(f"模型 '{self.ollama_model}' 已成功拉取并可访问。")
+                    logging.info(f"Model '{self.ollama_model}' has been successfully pulled and is accessible.")
                 except Exception as pull_error:
-                    logging.error(f"拉取模型 '{self.ollama_model}' 失败: {str(pull_error)}")
+                    logging.error(f"Failed to pull model '{self.ollama_model}': {str(pull_error)}")
                     raise
             else:
-                logging.error(f"检查模型可用性时发生意外错误: {str(e)}")
+                logging.error(f"Unexpected error while checking model accessibility: {str(e)}")
                 raise
 
     def fetch_article_abstract(self, url):
@@ -128,23 +133,19 @@ class RSSSummary:
                     else:
                         return result.get_text(strip=True)
 
-            logging.warning(f"未找到摘要: {url}")
+            logging.warning(f"Abstract not found: {url}")
             return None
         except requests.exceptions.RequestException as e:
-            logging.warning(f"获取文章失败 ({url}): {e}")
+            logging.warning(f"Failed to fetch article ({url}): {e}")
             return None
         except Exception as e:
-            logging.warning(f"提取摘要错误 ({url}): {e}")
+            logging.warning(f"Error extracting abstract ({url}): {e}")
             return None
 
     def summarize_article(self, content):
-        PROMPT = (
-            "请阅读以下文章内容，并提供一个简洁、清晰的总结，覆盖主要观点和关键信息。"
-            "总结应易于理解，并保持客观性。"
-        )
         try:
             messages = [
-                {"role": "user", "content": f"{PROMPT}\n\n文章内容:\n{content}"}
+                {"role": "user", "content": f"{self.PROMPT}\n\n文章内容:\n{content}"}
             ]
             response = self.ollama_client.chat(
                 model=self.ollama_model,
@@ -152,96 +153,92 @@ class RSSSummary:
             )
             summary = response['message']['content']
             if summary:
-                logging.info("成功生成摘要。")
+                logging.info("Summary generated successfully.")
                 return summary
             else:
-                logging.warning("摘要为空。")
-                return "摘要生成失败。"
+                logging.warning("Summary is empty.")
+                return "Summary generation failed."
         except ResponseError as e:
-            logging.error(f"Ollama API 请求失败: {e}")
-            return "摘要生成失败。"
+            logging.error(f"Ollama API request failed: {e}")
+            return "Summary generation failed."
         except Exception as e:
-            logging.error(f"使用 Ollama 生成摘要时出错: {e}")
-            return "摘要生成失败。"
+            logging.error(f"Error using Ollama to generate summary: {e}")
+            return "Summary generation failed."
         
     def _save_processed(self, current_processed):
         try:
             with FileLock(f"{self.config['processed_articles_file']}.lock"):
                 with open(self.config['processed_articles_file'], 'w', encoding='utf-8') as f:
                     json.dump(list(current_processed), f, ensure_ascii=False, indent=4)
-            logging.info("已保存此次处理的文章。")
+            logging.info("Processed articles have been saved.")
         except Exception as e:
-            logging.error(f"保存已处理文章失败: {e}")
+            logging.error(f"Failed to save processed articles: {e}")
 
     def _generate_report(self, summaries):
         try:
             report_dir = self.config['report_directory']
             if not os.path.exists(report_dir):
-                os.makedirs(report_dir)
-                logging.info(f"创建输出目录: {report_dir}")
+                os.makedirs(report_dir, exist_ok=True)
+                logging.info(f"Created output directory: {report_dir}")
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             report_path = os.path.join(report_dir, f'report_{timestamp}.html')
             with open(report_path, 'w', encoding='utf-8') as f:
-                f.write("<html><head><meta charset='UTF-8'><title>总结报告</title></head><body>")
-                f.write("<h1>总结报告</h1>")
+                f.write("<html><head><meta charset='UTF-8'><title>Summary Report</title></head><body>")
+                f.write("<h1>Summary Report</h1>")
                 for summary in summaries:
                     f.write(f"<h2><a href='{summary['link']}'>{summary['title']}</a></h2>")
                     f.write(f"<p>{summary['summary']}</p>")
                 f.write("</body></html>")
-            logging.info(f"报告已生成于 {report_path}")
+            logging.info(f"Report generated at {report_path}")
         except Exception as e:
-            logging.error(f"生成报告失败: {e}")
-
-    def _process_feed(self, feed_url):
-        feed_summaries = []
-        try:
-            feed = feedparser.parse(feed_url)
-            if feed.bozo:
-                logging.warning(f"解析源失败: {feed_url}")
-                return feed_summaries
-            for entry in feed.entries[:self.articles_per_feed]:
-                article_id = entry.get('id') or entry.get('link')
-                if article_id and article_id not in self.processed_articles:
-                    abstract = self.fetch_article_abstract(article_id)
-                    content = abstract or entry.get('summary', '') or entry.get('description', '') or \
-                              (entry.get('content', [{}])[0].get('value', '') if entry.get('content') else '') or entry.get('title', '')
-                    
-                    if not content:
-                        logging.warning(f"文章内容为空: {article_id}")
-                        continue
-
-                    summary = self.summarize_article(content)
-                    if summary != "摘要生成失败。":
-                        feed_summaries.append({
-                            "title": entry.get('title', '无标题'),
-                            "link": entry.get('link', ''),
-                            "summary": summary
-                        })
-                    else:
-                        logging.warning(f"摘要生成失败: {article_id}")
-        except Exception as e:
-            logging.error(f"处理源 {feed_url} 时出错: {e}")
-        return feed_summaries
+            logging.error(f"Failed to generate report: {e}")
 
     def process_feeds(self):
-        all_summaries = []
+        summaries = []
         current_processed = set()
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            future_to_feed = {executor.submit(self._process_feed, feed_url): feed_url for feed_url in self.feeds}
-            for future in as_completed(future_to_feed):
-                feed_url = future_to_feed[future]
-                try:
-                    summaries = future.result()
-                    all_summaries.extend(summaries)
-                    current_processed.update(summary['link'] for summary in summaries)
-                except Exception as e:
-                    logging.error(f"处理源 {feed_url} 时出错: {e}")
-
-        if all_summaries:
-            self._save_processed(current_processed)
-            self._generate_report(all_summaries)
+        for feed_url in self.feeds:
+            try:
+                feed = feedparser.parse(feed_url)
+                if feed.bozo:
+                    logging.warning(f"Failed to parse feed: {feed_url}")
+                    continue
+                count = 0
+                for entry in feed.entries:
+                    if count >= self.articles_per_feed:
+                        break
+                    article_id = entry.get('id') or entry.get('link')
+                    if article_id and article_id not in self.processed_articles:
+                        # Fetch article abstract
+                        abstract = self.fetch_article_abstract(article_id)
+                        if not abstract:
+                            # Fetch RSS article content
+                            content = (entry.get('summary', '') or entry.get('description', '') or
+                                       entry.get('content', [{}])[0].get('value', '') or entry.get('title', ''))
+                        else:
+                            content = abstract
+                        if not content:
+                            logging.warning(f"Article content is empty: {article_id}")
+                            continue
+                        summary = self.summarize_article(content)
+                        if summary != "Summary generation failed.":
+                            summaries.append({
+                                "title": entry.get('title', 'Untitled'),
+                                "link": entry.get('link', ''),
+                                "summary": summary,
+                                "content": content
+                            })
+                            current_processed.add(article_id)
+                            count += 1
+                        else:
+                            logging.warning(f"Summary generation failed: {article_id}")
+            except Exception as e:
+                logging.error(f"Error processing feed {feed_url}: {e}")
+        if summaries:
+            self._generate_report(summaries)
+            self.processed_articles.update(current_processed)
+            self._save_processed(self.processed_articles)
         else:
-            logging.warning("未生成任何摘要，未生成报告。")
+            logging.info("No summaries generated. Skipping report generation and saving processed records.")
 
 if __name__ == "__main__":
     rss_summary = RSSSummary('settings.json')
