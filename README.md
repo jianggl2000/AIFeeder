@@ -16,6 +16,24 @@
 - `BeautifulSoup` (from bs4): Parses HTML content to extract abstracts.
 - `re`: Uses regular expressions for text matching and extraction.
 
+## Installation
+### Install Ollama
+
+Following the Ollama [instruction](https://github.com/ollama/ollama?tab=readme-ov-file) to install Ollama on Windows or Linux.
+
+### Install AIFeeder
+
+```
+git clone https://github.com/jianggl2000/AIfeeder/
+
+cd AIfeeder
+
+pip install -r requirements.txt
+```
+## Run AIFeeder
+
+`python AIFeeder.py`
+
 ## 简介
 AIFeeder.py 是一个用于自动化处理 RSS 源的 Python 脚本。该脚本的主要功能包括从多个 RSS 源中获取最新的文章，提取文章摘要，使用 AI 模型（本地Ollama）生成文章摘要，并最终生成一个包含所有摘要的报告。此脚本特别适用于需要定期汇总和分析大量 RSS 文章内容的场景，如新闻聚合、研究综述或内容监控。
 
@@ -48,23 +66,7 @@ AIFeeder.py 是一个用于自动化处理 RSS 源的 Python 脚本。该脚本�
 - 考虑使用 ThreadPoolExecutor 来并行处理多个 RSS 源，提高处理效率，特别是在处理大量 RSS 源时。
 
 
-## Installation
-### Install Ollama
 
-Following the Ollama [instruction](https://github.com/ollama/ollama?tab=readme-ov-file) to install Ollama on Windows or Linux.
-
-### Install AIFeeder
-
-```
-git clone https://github.com/jianggl2000/AIfeeder/
-
-cd AIfeeder
-
-pip install -r requirements.txt
-```
-## Run AIFeeder
-
-`python AIFeeder.py`
 
 ## Reference
 - [Ollama](https://github.com/ollama/ollama?tab=readme-ov-file)
