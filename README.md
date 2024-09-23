@@ -6,7 +6,7 @@ Fetch and summarize RSS feeds using a local Ollama
 - Only process new RSS feeds, skip already summarized articles.
 
 - 利用本地Ollama分析RSS订阅，总结文献(中文总结)。
-- 仅处理新RSS订阅，对已总结过的文献跳过不再处理。
+- 仅处理新RSS订阅文章，对已总结过的文献跳过不再处理。
 
 # Installation
 ## Install Ollama
