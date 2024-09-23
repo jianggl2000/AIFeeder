@@ -6,9 +6,14 @@
 ## Install Ollama
 
 ## install AIFeeder
+
 git clone https://github.com/jianggl2000/AIfeeder/
+
 cd AIfeeder
+
 pip install -r requirements.txt
+
+python AIFeeder.py
 
 ## Reference
 - [Ollama](https://github.com/ollama/ollama?tab=readme-ov-file)
