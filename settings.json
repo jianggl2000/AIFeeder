@@ -1,0 +1,11 @@
+{
+    "feeds_source_file": "feeds.txt",
+    "report_directory": "articles",
+    "articles_per_feed": 2,
+    "processed_articles_file": "processed.json",
+    "ollama": {
+        "ip": "127.0.0.1",
+        "port": 11434,
+        "model": "llama3.1:8b"
+    }
+}
