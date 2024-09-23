@@ -1,6 +1,6 @@
 # AIFeeder
 
-Fetch and summarize RSS feeds using a local Ollama
+**Fetch and summarize RSS feeds using a local Ollama.**
 
 - Use local Ollama to analyze RSS feeds, summarize articles, and provide summaries (in Chinese; change the `PROMPT` in AIFeeder.py to summarize in other languages).
 - Only process new RSS feeds, skip already summarized articles.
