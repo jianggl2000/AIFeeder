@@ -12,15 +12,16 @@ Following the Ollama [instruction](https://github.com/ollama/ollama?tab=readme-o
 
 ## Install AIFeeder
 
+```
 git clone https://github.com/jianggl2000/AIfeeder/
 
 cd AIfeeder
 
 pip install -r requirements.txt
-
+```
 ## Run AIFeeder
 
-python AIFeeder.py
+`python AIFeeder.py`
 
 ## Reference
 - [Ollama](https://github.com/ollama/ollama?tab=readme-ov-file)
