@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 `python AIFeeder.py`
 
-
+--------
 
 ## 功能概述
 ### 配置管理：
