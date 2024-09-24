@@ -1,4 +1,4 @@
-# AIFeeder
+# About AIFeeder
 
 `AIFeeder.py` is a Python script designed to automate the processing of RSS feeds. Its main functions include fetching the latest articles from multiple RSS sources, extracting article abstracts, generating article summaries using an AI model (such as Ollama), and finally producing a report containing all the summaries. This script is particularly useful for scenarios that require regular aggregation and analysis of large volumes of RSS article content, such as news aggregation, research reviews, or content monitoring.
 
