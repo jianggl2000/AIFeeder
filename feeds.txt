@@ -1,7 +1,7 @@
 # 这是一个注释行，不会被加载
 https://feeds.science.org/rss/science.xml
 https://www.nature.com/nature.rss
-#https://www.cell.com/cell/current.rss
-#https://genome.cshlp.org/rss/current.xml
-#https://www.nature.com/nmeth.rss
-#https://www.nature.com/nbt.rss
+https://www.cell.com/cell/current.rss
+https://genome.cshlp.org/rss/current.xml
+https://www.nature.com/nmeth.rss
+https://www.nature.com/nbt.rss
