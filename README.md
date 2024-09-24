@@ -1,10 +1,16 @@
 # AIFeeder
 
-
 `AIFeeder.py` is a Python script designed to automate the processing of RSS feeds. Its main functions include fetching the latest articles from multiple RSS sources, extracting article abstracts, generating article summaries using an AI model (such as Ollama), and finally producing a report containing all the summaries. This script is particularly useful for scenarios that require regular aggregation and analysis of large volumes of RSS article content, such as news aggregation, research reviews, or content monitoring.
 
 - Use local Ollama to analyze RSS feeds, summarize articles (in Chinese; change the `PROMPT` in AIFeeder.py to summarize in other languages).
 - Only process new RSS feeds, skip already summarized articles.
+
+## 简介
+
+AIFeeder.py 是一个用于自动化处理 RSS 源的 Python 脚本。该脚本的主要功能包括从多个 RSS 源中获取最新的文章，提取文章摘要，使用 AI 模型（本地Ollama）生成文章摘要，并最终生成一个包含所有摘要的报告。此脚本特别适用于需要定期汇总和分析大量 RSS 文章内容的场景，如新闻聚合、研究综述或内容监控。
+
+- 利用本地Ollama分析RSS订阅，总结文献(中文总结)。
+- 仅处理新RSS订阅文章，对已总结过的文献跳过不再处理。
 
 ## Dependencies
 - `json`, `os`, `sys`, `logging`: Standard Python libraries for basic file operations and logging.
@@ -34,11 +40,7 @@ pip install -r requirements.txt
 
 `python AIFeeder.py`
 
-## 简介
-AIFeeder.py 是一个用于自动化处理 RSS 源的 Python 脚本。该脚本的主要功能包括从多个 RSS 源中获取最新的文章，提取文章摘要，使用 AI 模型（本地Ollama）生成文章摘要，并最终生成一个包含所有摘要的报告。此脚本特别适用于需要定期汇总和分析大量 RSS 文章内容的场景，如新闻聚合、研究综述或内容监控。
 
-- 利用本地Ollama分析RSS订阅，总结文献(中文总结)。
-- 仅处理新RSS订阅文章，对已总结过的文献跳过不再处理。
 
 ## 功能概述
 ### 配置管理：
