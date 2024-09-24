@@ -10,7 +10,6 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 import re
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 class RSSSummary:
     PROMPT = (
@@ -166,13 +165,17 @@ class RSSSummary:
             return "Summary generation failed."
         
     def _save_processed(self, current_processed):
+        lock = FileLock(f"{self.config['processed_articles_file']}.lock")
         try:
-            with FileLock(f"{self.config['processed_articles_file']}.lock"):
+            with lock:
                 with open(self.config['processed_articles_file'], 'w', encoding='utf-8') as f:
                     json.dump(list(current_processed), f, ensure_ascii=False, indent=4)
             logging.info("Processed articles have been saved.")
         except Exception as e:
             logging.error(f"Failed to save processed articles: {e}")
+        finally:
+            if lock.is_locked:
+                lock.release()
 
     def _generate_report(self, summaries):
         try:
@@ -188,6 +191,7 @@ class RSSSummary:
                 for summary in summaries:
                     f.write(f"<h2><a href='{summary['link']}'>{summary['title']}</a></h2>")
                     f.write(f"<p>{summary['summary']}</p>")
+                    f.write(f"<p>{summary['content']}</p>")
                 f.write("</body></html>")
             logging.info(f"Report generated at {report_path}")
         except Exception as e:
