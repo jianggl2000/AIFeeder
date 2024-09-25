@@ -214,7 +214,7 @@ class RSSSummary:
                     article_id = entry.get('id') or entry.get('link')
                     if article_id and article_id not in self.processed_articles:
                         # Fetch article abstract
-                        abstract = self.fetch_article_abstract(article_id)
+                        abstract = None #self.fetch_article_abstract(article_id)
                         if not abstract:
                             # Fetch RSS article content
                             content = (entry.get('summary', '') or entry.get('description', '') or
